@@ -1,0 +1,15 @@
+<div class='w-100 text-center'>
+  <h5>Select Participants</h5>
+</div>
+<div class='row'>
+  <div class='col-12'>
+    <div *ngFor="let item of participants" style='display:inline-block'>
+      <mat-checkbox (change)='onChange($event)' [value]='item'>{{item}}</mat-checkbox>&nbsp;&nbsp;
+    </div>
+  </div>
+</div>
+<div class='row'>
+  <div class='text-center w-100'>
+    <button mat-raised-button color="warn" (click)='closeDialog()'>Save</button>
+  </div>
+</div>

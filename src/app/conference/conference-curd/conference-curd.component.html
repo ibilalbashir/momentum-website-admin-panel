@@ -1,0 +1,181 @@
+<div class="card">
+  <div class="card-body">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Create a Conference
+          </mat-panel-title>
+        </mat-expansion-panel-header>
+        <form [formGroup]="conferenceForm">
+          <div class="row">
+            <mat-form-field class="w-100">
+              <input matInput formControlName="name" placeholder="Name">
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="w-100">
+              <input matInput formControlName="description" placeholder="Description">
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <mat-form-field class="w-100">
+                <input matInput formControlName="to" [matDatepicker]="to" placeholder="To">
+                <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+                <mat-datepicker #to></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field class="w-100">
+                <input matInput formControlName="from" [matDatepicker]="from" placeholder="From">
+                <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+                <mat-datepicker #from></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div class="col-4">
+              <mat-form-field class="w-100">
+                <mat-label>Select a Day</mat-label>
+                <mat-select formControlName="day" (selectionChange)=selectDay($event)>
+                  <mat-option *ngFor="let item of day" [value]="item">
+                    {{item}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="row">
+            <mat-form-field class="w-100">
+              <mat-label>Select a type</mat-label>
+              <mat-select formControlName="type" (selectionChange)=selectType($event)>
+                <mat-option *ngFor="let item of type" [value]="item">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <ng-container *ngIf="selectedType==='Keynote Speaker'; else elseTemplate">
+              <div class="col-12">
+                <mat-form-field class="w-100">
+                  <mat-label>Select a Speaker</mat-label>
+                  <mat-select formControlName="speaker" (selectionChange)=selectSpeaker($event)>
+                    <mat-option *ngFor="let item of speaker" [value]="item">
+                      {{item}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </ng-container>
+            <ng-template #elseTemplate>
+              <ng-container *ngIf="selectedType==='Fireside chat'; else elseTemplate1">
+                <div class='col-12'>
+                  <div class='w-100 text-center'>
+                    <button mat-raised-button color="accent" (click)="openDialog()">Select Participants for fireside
+                      chat</button>
+                  </div>
+                </div>
+
+              </ng-container>
+              <ng-template #elseTemplate1>
+                <ng-container *ngIf="selectedType==='Panel Discussion' ">
+                  <div class='col-6'>
+                    <mat-form-field class="w-100">
+                      <mat-label>Select a Moderator</mat-label>
+                      <mat-select formControlName="moderator" (selectionChange)=selectModerator($event)>
+                        <mat-option *ngFor="let item of speaker" [value]="item">
+                          {{item}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div class='col-6'>
+                    <div class='text-center w-100'>
+                      <button mat-raised-button color="accent" (click)="openPanelDialog()">Select participants for panel
+                        discussion</button>
+                    </div>
+                  </div>
+                </ng-container>
+
+              </ng-template>
+
+
+            </ng-template>
+
+          </div>
+          <div class="row">
+            <mat-form-field class="w-100">
+              <mat-label>Select a venue</mat-label>
+              <mat-select (selectionChange)=selectVenue($event)>
+                <mat-option *ngFor="let item of venue" [value]="item">
+                  {{item}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class='row'>
+            <div class='w-100 text-center'>
+              <button mat-raised-button color="primary" (click)='onSubmit()'>Submit</button>
+            </div>
+          </div>
+
+        </form>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+                  The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <td mat-cell *matCellDef="let element"> {{element.type}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+
+      <ng-container matColumnDef="to">
+        <th mat-header-cell *matHeaderCellDef> To </th>
+        <td mat-cell *matCellDef="let element"> {{element.to}} </td>
+      </ng-container>
+
+
+      <ng-container matColumnDef="from">
+        <th mat-header-cell *matHeaderCellDef> From </th>
+        <td mat-cell *matCellDef="let element"> {{element.from}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="day">
+        <th mat-header-cell *matHeaderCellDef> Day </th>
+        <td mat-cell *matCellDef="let element"> {{element.ActualDate}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="venue">
+        <th mat-header-cell *matHeaderCellDef> Venue </th>
+        <td mat-cell *matCellDef="let element"> {{element.venue}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>
