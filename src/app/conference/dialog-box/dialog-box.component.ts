@@ -22,6 +22,11 @@ export class DialogBoxComponent implements OnInit {
 		}
 	}
 	closeDialog(): void {
+		this.participants.forEach((element) => {
+			if (element.type === 'moderator') {
+				this.selectedParticipants.push(element);
+			}
+		});
 		this.dialogRef.close(this.selectedParticipants);
 	}
 

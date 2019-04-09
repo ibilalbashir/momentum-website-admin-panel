@@ -17,7 +17,7 @@ export class ConferenceCurdComponent implements OnInit {
 	dataSource;
 	type = [ 'Keynote Speaker', 'Fireside chat', 'Panel Discussion' ];
 	venue = [ 'Main hall 1', 'Main hall 2', 'Main hall 3' ];
-	day = [ '3/10/2020', '2/11/2020' ];
+	day = [ '30/04/2019', '1/05/2019' ];
 	speaker = [];
 	selectedType;
 	selectedParticipants = [];
@@ -42,7 +42,8 @@ export class ConferenceCurdComponent implements OnInit {
 			day: [ '' ],
 			moderator: [ '' ],
 			speaker: [ '' ],
-			type: [ '' ]
+			type: [ '' ],
+			venue: [ '' ]
 		});
 	}
 	fetchConference() {
@@ -57,15 +58,31 @@ export class ConferenceCurdComponent implements OnInit {
 	}
 	selectType(item) {
 		this.selectedType = item.source.value;
+		if (this.selectedType === 'Fireside chat' || this.selectedType === 'Keynote Speaker') {
+			this.speaker.forEach((element) => {
+				element.type = 'speaker';
+			});
+		}
 	}
 	selectDay(item) {
 		this.selectedDay = item.source.value;
 	}
 	selectSpeaker(item) {
+		console.log(item);
 		this.selectedSpeaker = item.source.value;
 	}
 	selectModerator(item) {
 		this.selectedModerator = item.source.value;
+		this.speaker.forEach((element) => {
+			if (element.type === 'moderator') {
+				element.type = 'speaker';
+			}
+		});
+		this.speaker.forEach((element) => {
+			if (item.value.id === element.id) {
+				element.type = 'moderator';
+			}
+		});
 	}
 	selectVenue(item) {
 		this.selectedVenue = item.source.value;
@@ -77,6 +94,7 @@ export class ConferenceCurdComponent implements OnInit {
 		});
 		dialogRef.afterClosed().subscribe((result) => {
 			this.selectedParticipants = result;
+			console.log(result);
 			this.toastr.success('Participants have been saved, reselect to change your values.');
 		});
 	}
@@ -87,6 +105,7 @@ export class ConferenceCurdComponent implements OnInit {
 		});
 		dialogRef.afterClosed().subscribe((result) => {
 			this.selectedPanelParticipants = result;
+			console.log(result);
 			this.toastr.success('Participants have been saved, reselect to change your values.');
 		});
 	}
@@ -94,9 +113,13 @@ export class ConferenceCurdComponent implements OnInit {
 	ngOnInit() {
 		this.speakerService.getSpeaker().subscribe(
 			(val) => {
-				console.log(val);
 				val.forEach((element) => {
-					this.speaker.push(element.name);
+					const data = {
+						name: element.name,
+						id: element.id,
+						type: 'speaker'
+					};
+					this.speaker.push(data);
 				});
 			},
 			(err) => console.log(err)
@@ -116,7 +139,7 @@ export class ConferenceCurdComponent implements OnInit {
 				type: this.selectedType,
 				participant: people,
 				venue: this.selectedVenue,
-				ActualDate: this.selectedDay,
+				actualDate: this.selectedDay,
 				tags: 'not yet defined'
 			};
 		} else if (this.selectedType === 'Fireside chat') {
@@ -129,7 +152,7 @@ export class ConferenceCurdComponent implements OnInit {
 				type: this.selectedType,
 				participant: people,
 				venue: this.selectedVenue,
-				ActualDate: this.selectedDay,
+				actualDate: this.selectedDay,
 				tags: 'not yet defined'
 			};
 		} else if (this.selectedType === 'Panel Discussion') {
@@ -140,9 +163,8 @@ export class ConferenceCurdComponent implements OnInit {
 				to: this.conferenceForm.get('to').value,
 				from: this.conferenceForm.get('from').value,
 				type: this.selectedType,
-				moderator: this.selectedModerator,
 				participant: people,
-				ActualDate: this.selectedDay,
+				actualDate: this.selectedDay,
 				venue: this.selectedVenue,
 				tags: 'not yet defined'
 			};
@@ -154,7 +176,10 @@ export class ConferenceCurdComponent implements OnInit {
 				this.toastr.success('Conference Saved.');
 				this.fetchConference();
 			},
-			(err) => this.toastr.error('Error, check all entries and try again!')
+			(err) => {
+				this.toastr.error('Error, check all entries and try again!');
+				console.log(err);
+			}
 		);
 	}
 }
