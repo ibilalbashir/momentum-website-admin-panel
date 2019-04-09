@@ -117,7 +117,8 @@ export class ConferenceCurdComponent implements OnInit {
 					const data = {
 						name: element.name,
 						id: element.id,
-						type: 'speaker'
+						type: 'speaker',
+						imgUrl: element.image
 					};
 					this.speaker.push(data);
 				});

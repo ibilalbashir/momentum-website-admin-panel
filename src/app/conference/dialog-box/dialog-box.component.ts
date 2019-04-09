@@ -13,6 +13,7 @@ export class DialogBoxComponent implements OnInit {
 	selectedParticipants = [];
 	constructor(public dialogRef: MatDialogRef<DialogBoxComponent>, @Inject(MAT_DIALOG_DATA) public data: DialogData) {
 		this.participants = data as any;
+		console.log(this.participants);
 	}
 	onChange(item) {
 		if (item.checked) {
@@ -23,7 +24,7 @@ export class DialogBoxComponent implements OnInit {
 	}
 	closeDialog(): void {
 		this.participants.forEach((element) => {
-			if (element.type === 'moderator') {
+			if (element['type'] === 'moderator') {
 				this.selectedParticipants.push(element);
 			}
 		});
