@@ -58,6 +58,10 @@ export const Approutes: Routes = [
 			{
 				path: 'conference',
 				loadChildren: './conference/conference.module#ConferenceModule'
+			},
+			{
+				path: 'tickets',
+				loadChildren: './ticket/ticket.module#TicketModule'
 			}
 		]
 	},
