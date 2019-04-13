@@ -3,11 +3,14 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { FullComponent } from './layouts/full/full.component';
 import { BlankComponent } from './layouts/blank/blank.component';
+import { AuthGuard } from './shared/guard/auth.guard';
 
 export const Approutes: Routes = [
 	{
 		path: '',
 		component: FullComponent,
+		canActivate: [ AuthGuard ],
+
 		children: [
 			{ path: '', redirectTo: '/dashboard/classic', pathMatch: 'full' },
 			{
@@ -62,6 +65,10 @@ export const Approutes: Routes = [
 			{
 				path: 'tickets',
 				loadChildren: './ticket/ticket.module#TicketModule'
+			},
+			{
+				path: 'company',
+				loadChildren: './company/company.module#CompanyModule'
 			}
 		]
 	},
@@ -70,13 +77,13 @@ export const Approutes: Routes = [
 		component: BlankComponent,
 		children: [
 			{
-				path: 'authentication',
+				path: '',
 				loadChildren: './authentication/authentication.module#AuthenticationModule'
 			}
 		]
 	},
 	{
 		path: '**',
-		redirectTo: '/authentication/404'
+		redirectTo: '/404'
 	}
 ];

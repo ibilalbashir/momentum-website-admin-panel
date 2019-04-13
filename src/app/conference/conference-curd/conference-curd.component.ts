@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ConferenceService } from 'src/app/shared/conference.service';
+import { ConferenceService } from 'src/app/shared/services/conference.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({

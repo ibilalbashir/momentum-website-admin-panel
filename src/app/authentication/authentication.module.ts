@@ -12,20 +12,25 @@ import { SignupComponent } from './signup/signup.component';
 import { Signup2Component } from './signup2/signup2.component';
 
 import { AuthenticationRoutes } from './authentication.routing';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    RouterModule.forChild(AuthenticationRoutes),
-    NgbModule
-  ],
-  declarations: [
-    NotfoundComponent,
-    LoginComponent,
-    SignupComponent,
-    LockComponent,
-    Login2Component,
-    Signup2Component
-  ]
+	imports: [
+		CommonModule,
+		RouterModule.forChild(AuthenticationRoutes),
+		NgbModule,
+		FormsModule,
+		ReactiveFormsModule,
+		MatFormFieldModule
+	],
+	declarations: [
+		NotfoundComponent,
+		LoginComponent,
+		SignupComponent,
+		LockComponent,
+		Login2Component,
+		Signup2Component
+	]
 })
 export class AuthenticationModule {}

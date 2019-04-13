@@ -32,6 +32,15 @@ export const ROUTES: RouteInfo[] = [
 		class: '',
 		extralink: false,
 		submenu: []
+	},
+
+	{
+		path: '/company',
+		title: 'Company',
+		icon: 'mdi mdi-home',
+		class: '',
+		extralink: false,
+		submenu: []
 	}
 ];
 // 		path: '',

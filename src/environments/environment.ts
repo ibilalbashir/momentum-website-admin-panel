@@ -4,7 +4,8 @@
 
 export const environment = {
 	production: true,
-	url: 'http://13.127.195.231:3000/api'
+	url: 'http://13.127.195.231:3000/api',
+	key: 'MomentumAdminEncKey'
 };
 
 /*
@@ -12,5 +13,6 @@ export const environment = {
  * `zone.run`, `zoneDelegate.invokeTask` for easier debugging, you can
  * import the following file, but please comment it out in production mode
  * because it will have performance impact when throw error
+ * http://13.127.195.231:3000/api
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.
