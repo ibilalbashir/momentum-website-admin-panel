@@ -8,8 +8,8 @@ import { AuthService } from '../services/auth.service';
 	providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-	// path: ActivatedRouteSnapshot[];
-	// route: ActivatedRouteSnapshot;
+	path: ActivatedRouteSnapshot[];
+	route: ActivatedRouteSnapshot;
 	constructor(private auth: AuthService, private router: Router) {}
 
 	canActivate(): boolean {

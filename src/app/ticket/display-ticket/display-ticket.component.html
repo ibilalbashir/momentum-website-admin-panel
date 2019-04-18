@@ -2,13 +2,10 @@
   <div class="text-center w-100 m-t-20">
     <h3>Tickets</h3>
     <div class='m-2 w-100 text-center'>
-      <mat-checkbox (change)=applyFilter($event) *ngFor="let item of filterThis" [value]='item'>{{item}}
+      <mat-checkbox (change)=applyFilter($event) *ngFor="let item of filterThis" [value]='item'>
+        {{item}}
       </mat-checkbox>
-      <!-- <mat-radio-group aria-label="Select an option" (change)=applyFilter($event.value)>
-        <mat-radio-button value="Entrepreneur Pass">Entrepreneur Pass</mat-radio-button>
-        <mat-radio-button value="Corporate Pass">Corporate Pass</mat-radio-button>
-        <mat-radio-button value="Student Pass">Student Pass</mat-radio-button>
-      </mat-radio-group> -->
+
     </div>
   </div>
   <div class="card-body">

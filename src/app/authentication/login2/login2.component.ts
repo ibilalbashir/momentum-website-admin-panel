@@ -14,12 +14,16 @@ export class Login2Component {
 			email: [ '', [ Validators.required, Validators.email ] ],
 			password: [ '', Validators.required ]
 		});
+		localStorage.clear();
 	}
 	submit() {
+		localStorage.setItem('email', this.loginForm.get('email').value);
 		this.status = 'Processing';
 		this.authService.login(this.loginForm.value).subscribe(
 			(val) => {
 				localStorage.setItem('MomentumToken', val.id);
+				localStorage.setItem('userId', val.userId);
+
 				this.loginForm.reset();
 				this.router.navigateByUrl('/');
 			},

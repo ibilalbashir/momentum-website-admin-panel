@@ -12,7 +12,7 @@ export const Approutes: Routes = [
 		canActivate: [ AuthGuard ],
 
 		children: [
-			{ path: '', redirectTo: '/dashboard/classic', pathMatch: 'full' },
+			{ path: '', redirectTo: '/tickets', pathMatch: 'full' },
 			{
 				path: 'dashboard',
 				loadChildren: './dashboards/dashboard.module#DashboardModule'
@@ -69,6 +69,14 @@ export const Approutes: Routes = [
 			{
 				path: 'company',
 				loadChildren: './company/company.module#CompanyModule'
+			},
+			{
+				path: 'company-service',
+				loadChildren: './company-ser/company-ser.module#CompanySerModule'
+			},
+			{
+				path: 'workshop',
+				loadChildren: './workshop/workshop.module#WorkshopModule'
 			}
 		]
 	},

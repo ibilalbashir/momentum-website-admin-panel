@@ -15,6 +15,7 @@ import { PartnerService } from 'src/app/shared/services/partner.service';
 export class PartnerCrudComponent implements OnInit {
 	selectedCat;
 	image;
+	showOnFront = false;
 	selectedFile = '';
 	partnerForm: FormGroup;
 	displayedColumns: string[] = [ 'name', 'description', 'category', 'socialLinks' ];
@@ -67,12 +68,16 @@ export class PartnerCrudComponent implements OnInit {
 		this.selectedCat = item;
 		console.log(item);
 	}
+	ifTrue(item) {
+		this.showOnFront = item.checked;
+	}
 	onSubmit() {
 		const obj = {
 			name: this.partnerForm.get('name').value,
 			category: this.selectedCat,
 			description: this.partnerForm.get('description').value,
 			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
+			showOnFront: this.showOnFront,
 			socialLinks: [
 				{
 					key: 'Facebook',

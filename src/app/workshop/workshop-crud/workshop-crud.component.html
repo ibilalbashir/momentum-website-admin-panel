@@ -1,0 +1,140 @@
+<div class="card">
+  <div class="card-body">
+    <mat-accordion>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            Create a Workshop
+          </mat-panel-title>
+
+        </mat-expansion-panel-header>
+        <form (ngSubmit)="onSubmit()" [formGroup]="workshopForm">
+
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="w-100">
+                <input matInput formControlName="name" placeholder="Name">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="w-100">
+                <input matInput formControlName="description" placeholder="Description">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-6">
+              <mat-form-field class="w-100">
+                <mat-label>Select a Trainer</mat-label>
+                <mat-select formControlName="trainer" (selectionChange)="selectSpeaker($event)">
+                  <mat-option *ngFor="let item of speakers" [value]="item">
+                    {{item.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div class="col-6">
+              <mat-form-field class="w-100">
+                <mat-label>Select an Organization</mat-label>
+                <mat-select formControlName="organization" (selectionChange)="selectCompany($event)">
+                  <mat-option *ngFor="let item of companies" [value]="item">
+                    {{item.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="w-100">
+                <input matInput type="number" formControlName="price" placeholder="Price">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="w-100">
+                <input matInput formControlName="tickerUrl" placeholder="Ticker Url">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="w-100">
+                <input matInput type="number" formControlName="capacity" placeholder="Capacity">
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12">
+              <mat-form-field class="w-100">
+                <textarea matInput formControlName="courseOutline" placeholder="Course Outline"></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+
+
+
+          <div class="row">
+            <div class="w-100 text-center">
+              <button mat-raised-button type="submit" color="primary">Submit</button>
+            </div>
+          </div>
+        </form>
+
+      </mat-expansion-panel>
+
+    </mat-accordion>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+              The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="price">
+        <th mat-header-cell *matHeaderCellDef> Price </th>
+        <td mat-cell *matCellDef="let element"> {{element.price}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="tickerUrl">
+        <th mat-header-cell *matHeaderCellDef> Ticker Url </th>
+        <td mat-cell *matCellDef="let element"><a [href]="element.tickerUrl" target="_blank">Go to link</a> </td>
+      </ng-container>
+
+      <ng-container matColumnDef="capacity">
+        <th mat-header-cell *matHeaderCellDef> Capacity </th>
+        <td mat-cell *matCellDef="let element"> {{element.capacity}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+</div>

@@ -15,4 +15,7 @@ export class ConferenceService {
 	getConference(): Observable<any> {
 		return this.http.get(`${environment.url}/Conferences`);
 	}
+	getConferenceById(id): Observable<any> {
+		return this.http.get(`${environment.url}/Conferences/${id}`);
+	}
 }

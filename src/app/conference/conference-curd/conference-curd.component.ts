@@ -13,7 +13,7 @@ import { MatTableDataSource } from '@angular/material/table';
 	styleUrls: [ './conference-curd.component.css' ]
 })
 export class ConferenceCurdComponent implements OnInit {
-	displayedColumns: string[] = [ 'name', 'description', 'type', 'to', 'from', 'day', 'venue' ];
+	displayedColumns: string[] = [ 'name', 'description', 'type', 'to', 'from', 'day', 'venue', 'edit' ];
 	dataSource;
 	type = [ 'Keynote Speaker', 'Fireside chat', 'Panel Discussion' ];
 	venue = [ 'Main hall 1', 'Main hall 2', 'Main hall 3' ];
@@ -46,6 +46,25 @@ export class ConferenceCurdComponent implements OnInit {
 			venue: [ '' ]
 		});
 	}
+	getConferenceById(id) {
+		this.conService.getConferenceById(id).subscribe((val) => {
+			this.conferenceForm.patchValue({
+				name: val.name,
+				description: val.description,
+				to: val.to,
+				from: val.from,
+				day: val.actualDate,
+				type: val.type,
+				venue: val.venue
+			});
+			this.selectedType = val.type;
+			if (this.selectedType === 'Keynote Speaker') {
+				this.conferenceForm.patchValue({
+					speaker: val.participant[0]
+				});
+			}
+		}, (err) => console.log);
+	}
 	fetchConference() {
 		this.conService.getConference().subscribe(
 			(val) => {
@@ -57,6 +76,7 @@ export class ConferenceCurdComponent implements OnInit {
 		);
 	}
 	selectType(item) {
+		console.log(item);
 		this.selectedType = item.source.value;
 		if (this.selectedType === 'Fireside chat' || this.selectedType === 'Keynote Speaker') {
 			this.speaker.forEach((element) => {
@@ -68,8 +88,8 @@ export class ConferenceCurdComponent implements OnInit {
 		this.selectedDay = item.source.value;
 	}
 	selectSpeaker(item) {
-		console.log(item);
 		this.selectedSpeaker = item.source.value;
+		console.log(this.conferenceForm.get('speaker').value);
 	}
 	selectModerator(item) {
 		this.selectedModerator = item.source.value;
@@ -182,5 +202,13 @@ export class ConferenceCurdComponent implements OnInit {
 				console.log(err);
 			}
 		);
+	}
+	updateConference() {}
+	compareFn(o1, o2) {
+		console.log(o1, o2);
+		if (o1.id === o2.id) {
+			return true;
+		}
+		return false;
 	}
 }

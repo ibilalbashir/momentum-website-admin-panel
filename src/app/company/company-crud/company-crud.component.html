@@ -7,16 +7,16 @@
             Add a company
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <form class="example-form">
+        <form [formGroup]="companyForm">
           <div class="row">
             <div class="col-6">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Name">
+                <input matInput formControlName="name" placeholder="Name">
               </mat-form-field>
             </div>
             <div class="col-6">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Description">
+                <input matInput formControlName="description" placeholder="Description">
               </mat-form-field>
             </div>
 
@@ -26,9 +26,9 @@
             <div class="col-4">
               <mat-form-field class="w-100">
                 <mat-label>Country</mat-label>
-                <mat-select>
-                  <mat-option>
-                    test
+                <mat-select formControlName="country" (selectionChange)="selectCountry($event)">
+                  <mat-option *ngFor="let item of country" [value]='item'>
+                    {{item.name}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -36,9 +36,9 @@
             <div class="col-4">
               <mat-form-field class="w-100">
                 <mat-label>State</mat-label>
-                <mat-select>
-                  <mat-option>
-                    test
+                <mat-select formControlName="state" (selectionChange)="selectState($event)">
+                  <mat-option *ngFor="let item of state" [value]='item'>
+                    {{item.name}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -46,9 +46,9 @@
             <div class="col-4">
               <mat-form-field class="w-100">
                 <mat-label>City</mat-label>
-                <mat-select>
-                  <mat-option>
-                    test
+                <mat-select formControlName="city" (selectionChange)="selectCity($event)">
+                  <mat-option *ngFor="let item of city" [value]='item'>
+                    {{item.name}}
                   </mat-option>
                 </mat-select>
               </mat-form-field>
@@ -60,10 +60,8 @@
             <div class="col-12">
               <mat-form-field class="w-100">
                 <mat-label>Category</mat-label>
-                <mat-select>
-                  <mat-option>
-                    test
-                  </mat-option>
+                <mat-select formControlName="category" multiple (selectionChange)="selectCategory($event)">
+                  <mat-option string *ngFor="let item of category" [value]="item.id">{{item.name}}</mat-option>
                 </mat-select>
               </mat-form-field>
             </div>
@@ -72,21 +70,21 @@
           <div class="row">
             <div class="col-12">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Email">
+                <input matInput formControlName="email" placeholder="Email">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Phone">
+                <input matInput formControlName="phone" placeholder="Phone">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Address">
+                <input matInput formControlName="address" placeholder="Address">
               </mat-form-field>
             </div>
           </div>
@@ -121,38 +119,98 @@
           <div class="row">
             <div class="col-12">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Facebook">
+                <input matInput formControlName="facebook" placeholder="Facebook">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Linkedin">
+                <input matInput formControlName="linkedin" placeholder="Linkedin">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Twitter">
+                <input matInput formControlName="twitter" placeholder="Twitter">
               </mat-form-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <mat-form-field class="w-100">
-                <input matInput placeholder="Website">
+                <input matInput formControlName="website" placeholder="Website">
               </mat-form-field>
             </div>
           </div>
-          <div class="row">
-            <div class="w-100 text-center">
-              <button mat-raised-button color="primary">Submit</button>
+          <ng-container *ngIf="!ifUpdate; else elseThis">
+            <div class="row">
+              <div class="w-100 text-center">
+                <button mat-raised-button (click)="onSubmit()" color="primary">Submit</button>
+              </div>
             </div>
-          </div>
+          </ng-container>
+          <ng-template #elseThis>
+            <div class="row">
+              <div class="w-100 text-center">
+                <button mat-raised-button (click)="updateCompany()" color="primary">update</button> &nbsp;
+                <a (click)=cancelUpdate()>cancel</a>
+              </div>
+            </div>
+          </ng-template>
+
+
         </form>
       </mat-expansion-panel>
     </mat-accordion>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+
+      <!--- Note that these columns can be defined in any order.
+            The actual rendered columns are set as a property on the row definition" -->
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef> Name </th>
+        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+      </ng-container>
+
+      <!-- Weight Column -->
+      <ng-container matColumnDef="email">
+        <th mat-header-cell *matHeaderCellDef> Email </th>
+        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+      </ng-container>
+
+      <!-- Symbol Column -->
+      <ng-container matColumnDef="socialLinks">
+        <th mat-header-cell *matHeaderCellDef> Social Links </th>
+        <td mat-cell *matCellDef="let element">
+          <div style="display: inline-block;" *ngFor="let item of element.socialLinks">
+            <a [href]='item.link' target="_blank">{{item.key}}</a>&nbsp;
+          </div>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="edit">
+        <th mat-header-cell *matHeaderCellDef> </th>
+        <td mat-cell *matCellDef="let element">
+          <i class="mdi mdi-table-edit" (click)="getCompanyData(element.id)"></i>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
   </div>
 </div>

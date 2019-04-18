@@ -15,6 +15,7 @@ export class SpeakerCrudComponent implements OnInit {
 	image;
 	selectedFile = '';
 	speakerForm: FormGroup;
+	ifFront = false;
 	displayedColumns: string[] = [ 'name', 'email', 'company', 'designation', 'socialLinks' ];
 	dataSource;
 
@@ -28,11 +29,14 @@ export class SpeakerCrudComponent implements OnInit {
 			name: [ '' ],
 			company: [ '' ],
 			designation: [ '' ],
+			description: [ '' ],
 			email: [ '', Validators.email ],
 			linkFacebook: [ '' ],
 			linkTwitter: [ '' ],
 			linkLinkedin: [ '' ],
-			linkWebsite: [ '' ]
+			linkWebsite: [ '' ],
+
+			showFront: []
 		});
 	}
 
@@ -61,14 +65,19 @@ export class SpeakerCrudComponent implements OnInit {
 			this.selectedFile = '';
 		}
 	}
-
+	IfShow(item) {
+		console.log(item);
+		this.ifFront = item.checked;
+	}
 	onSubmit() {
 		const obj = {
 			name: this.speakerForm.get('name').value,
 			company: this.speakerForm.get('company').value,
 			designation: this.speakerForm.get('designation').value,
+			description: this.speakerForm.get('description').value,
 			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
 			email: this.speakerForm.get('email').value,
+			showOnFront: this.ifFront,
 			socialLinks: [
 				{
 					key: 'Facebook',
@@ -88,7 +97,6 @@ export class SpeakerCrudComponent implements OnInit {
 				}
 			]
 		};
-		// 	console.log(obj);
 		this.speakerService.postSpeaker(obj).subscribe(
 			(val) => {
 				this.speakerForm.reset();
