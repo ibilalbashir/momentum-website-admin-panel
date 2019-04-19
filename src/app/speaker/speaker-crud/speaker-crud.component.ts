@@ -12,11 +12,13 @@ import { ImageUploadService } from 'src/app/shared/services/image-upload.service
 	styleUrls: [ './speaker-crud.component.css' ]
 })
 export class SpeakerCrudComponent implements OnInit {
+	id;
+	ifUpdate = false;
 	image;
 	selectedFile = '';
 	speakerForm: FormGroup;
 	ifFront = false;
-	displayedColumns: string[] = [ 'name', 'email', 'company', 'designation', 'socialLinks' ];
+	displayedColumns: string[] = [ 'name', 'email', 'company', 'designation', 'socialLinks', 'edit' ];
 	dataSource;
 
 	constructor(
@@ -39,11 +41,35 @@ export class SpeakerCrudComponent implements OnInit {
 			showFront: []
 		});
 	}
-
+	cancelUpdate() {
+		this.ifUpdate = false;
+		this.speakerForm.reset();
+		this.selectedFile = '';
+	}
 	ngOnInit() {
 		this.fetchSpeakers();
 	}
-
+	getSpeakersById(id) {
+		this.ifUpdate = true;
+		this.id = id;
+		this.speakerService.getSpeakerById(id).subscribe(
+			(val) => {
+				console.log(val);
+				this.speakerForm.patchValue({
+					name: val.name,
+					company: val.company,
+					designation: val.designation,
+					description: val.description,
+					email: val.email,
+					linkFacebook: val.socialLinks[0].link,
+					linkTwitter: val.socialLinks[1].link,
+					linkLinkedin: val.socialLinks[2].link,
+					linkWebsite: val.socialLinks[3].link
+				});
+			},
+			(err) => console.log(err)
+		);
+	}
 	fetchSpeakers() {
 		this.speakerService.getSpeaker().subscribe(
 			(val) => {
@@ -66,7 +92,6 @@ export class SpeakerCrudComponent implements OnInit {
 		}
 	}
 	IfShow(item) {
-		console.log(item);
 		this.ifFront = item.checked;
 	}
 	onSubmit() {
@@ -105,6 +130,45 @@ export class SpeakerCrudComponent implements OnInit {
 				this.selectedFile = '';
 			},
 			(err) => this.toastr.error('Something went wrong, please try again.')
+		);
+	}
+	updateSpeakers() {
+		const obj = {
+			name: this.speakerForm.get('name').value,
+			company: this.speakerForm.get('company').value,
+			designation: this.speakerForm.get('designation').value,
+			description: this.speakerForm.get('description').value,
+			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
+			email: this.speakerForm.get('email').value,
+			showOnFront: this.ifFront,
+			socialLinks: [
+				{
+					key: 'Facebook',
+					link: this.speakerForm.get('linkFacebook').value
+				},
+				{
+					key: 'Twitter',
+					link: this.speakerForm.get('linkTwitter').value
+				},
+				{
+					key: 'Linkedin',
+					link: this.speakerForm.get('linkLinkedin').value
+				},
+				{
+					key: 'Website',
+					link: this.speakerForm.get('linkWebsite').value
+				}
+			]
+		};
+		this.speakerService.patchSpeaker(this.id, obj).subscribe(
+			(val) => {
+				console.log(val);
+				this.speakerForm.reset();
+				this.fetchSpeakers();
+				this.toastr.success('Speaker updated.');
+				this.selectedFile = '';
+			},
+			(err) => console.log(err)
 		);
 	}
 }

@@ -15,4 +15,10 @@ export class SpeakerService {
 	getSpeaker(): Observable<any> {
 		return this.http.get(`${environment.url}/Speakers`);
 	}
+	getSpeakerById(id): Observable<any> {
+		return this.http.get(`${environment.url}/Speakers/${id}`);
+	}
+	patchSpeaker(id, data): Observable<any> {
+		return this.http.patch(`${environment.url}/Speakers/${id}`, data);
+	}
 }

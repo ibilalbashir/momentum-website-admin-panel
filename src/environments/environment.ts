@@ -14,5 +14,6 @@ export const environment = {
  * import the following file, but please comment it out in production mode
  * because it will have performance impact when throw error
  * http://13.127.195.231:3000/api  dev
+ * http://13.233.9.45:3000/api live
  */
 // import 'zone.js/dist/zone-error';  // Included with Angular CLI.

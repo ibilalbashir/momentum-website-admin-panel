@@ -21,6 +21,7 @@ export class DialogBoxComponent implements OnInit {
 		} else {
 			this.selectedParticipants.splice(this.participants.indexOf(item.source.value), 1);
 		}
+		console.log(this.selectedParticipants);
 	}
 	closeDialog(): void {
 		this.participants.forEach((element) => {
