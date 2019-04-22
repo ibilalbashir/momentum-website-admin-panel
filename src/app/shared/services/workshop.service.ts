@@ -13,4 +13,10 @@ export class WorkshopService {
 	getWorkshop(): Observable<any> {
 		return this.http.get(`${environment.url}/Workshops`);
 	}
+	getWorkshopById(id): Observable<any> {
+		return this.http.get(`${environment.url}/Workshops/${id}`);
+	}
+	patchWorkshopById(id, data): Observable<any> {
+		return this.http.patch(`${environment.url}/Workshops/${id}`, data);
+	}
 }

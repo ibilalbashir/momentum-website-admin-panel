@@ -23,6 +23,7 @@ export class CompanyCrudComponent implements OnInit {
 	selectedState;
 	selectedCity;
 	dataSource;
+	shouldOpen = false;
 	displayedColumns: string[] = [ 'name', 'description', 'email', 'socialLinks', 'edit' ];
 
 	country = [];
@@ -74,11 +75,13 @@ export class CompanyCrudComponent implements OnInit {
 		);
 	}
 	cancelUpdate() {
+		this.shouldOpen = false;
 		this.ifUpdate = false;
 		this.companyForm.reset();
 		this.selectedFile = '';
 	}
 	updateCompany() {
+		this.shouldOpen = false;
 		const data = {
 			name: this.companyForm.get('name').value,
 			phone: this.companyForm.get('phone').value,
@@ -86,7 +89,7 @@ export class CompanyCrudComponent implements OnInit {
 			description: this.companyForm.get('description').value,
 			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
 			email: this.companyForm.get('email').value,
-			category: this.selectedCategories,
+			category: this.companyForm.get('category').value,
 			cityId: this.selectedCity,
 			momentumUserId: localStorage.getItem('userId'),
 			teamMembers: [],
@@ -112,20 +115,20 @@ export class CompanyCrudComponent implements OnInit {
 		console.log(data);
 		this.companyService.patchCompany(this.id, data).subscribe(
 			(val) => {
-				console.log(val);
 				this.cancelUpdate();
 				this.toastr.success('Company Updated');
 				this.fetchCompanies();
+				this.selectedFile = '';
 			},
 			(err) => console.log(err)
 		);
 	}
 	getCompanyData(id) {
+		this.shouldOpen = true;
 		this.id = id;
 		this.ifUpdate = true;
 
 		this.companyService.getCompanyId(id).subscribe((val) => {
-			// this.tagService.getTagsById()
 			this.companyForm.patchValue({
 				name: val.name,
 				description: val.description,
@@ -201,7 +204,7 @@ export class CompanyCrudComponent implements OnInit {
 			description: this.companyForm.get('description').value,
 			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
 			email: this.companyForm.get('email').value,
-			category: this.selectedCategories,
+			category: this.companyForm.get('category').value,
 			cityId: this.selectedCity,
 			momentumUserId: localStorage.getItem('userId'),
 			teamMembers: [],
@@ -224,7 +227,7 @@ export class CompanyCrudComponent implements OnInit {
 				}
 			]
 		};
-
+		console.log(data);
 		this.companyService.postCompany(data).subscribe(
 			(val) => {
 				console.log(val);
@@ -236,4 +239,18 @@ export class CompanyCrudComponent implements OnInit {
 			(err) => console.log(err)
 		);
 	}
+	ifActive(id, $event) {
+		const data = {
+			isActive: $event.checked
+		};
+		this.companyService.patchCompany(id, data).subscribe((val) => console.log(val), (err) => console.log(err));
+	}
+	// compareFn(o1, o2) {
+	// 	console.log(o1 + 'o1');
+	// 	console.log(o2 + 'o2');
+	// 	if (o1.id === o2.id) {
+	// 		return true;
+	// 	}
+	// 	return false;
+	// }
 }

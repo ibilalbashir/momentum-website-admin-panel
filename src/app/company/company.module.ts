@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material';
 import { ToastrModule } from 'ngx-toastr';
 import { MatTableModule } from '@angular/material/table';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 @NgModule({
 	declarations: [ CompanyCrudComponent ],
 	imports: [
@@ -24,6 +25,7 @@ import { MatTableModule } from '@angular/material/table';
 		MatFormFieldModule,
 		MatButtonModule,
 		MatTableModule,
+		MatCheckboxModule,
 		ToastrModule.forRoot()
 	]
 })

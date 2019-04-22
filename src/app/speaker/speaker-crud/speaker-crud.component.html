@@ -1,7 +1,8 @@
 <div class="card">
   <div class="card-body">
     <mat-accordion>
-      <mat-expansion-panel>
+      <mat-expansion-panel [expanded]='shouldOpen'>
+
         <mat-expansion-panel-header>
           <mat-panel-title>
             Create a Speaker
@@ -152,14 +153,15 @@
         <th mat-header-cell *matHeaderCellDef> Social Links </th>
         <td mat-cell *matCellDef="let element">
           <div style="display: inline-block;" *ngFor="let item of element.socialLinks">
-            <a [href]='item.link' target="_blank">{{item.key}}</a>&nbsp;
+            <a [href]=item.link target="_blank">{{item.key}}</a>&nbsp;
           </div>
         </td>
       </ng-container>
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef> </th>
         <td mat-cell *matCellDef="let element">
-          <i class="mdi mdi-table-edit" (click)="getSpeakersById(element.id)"></i>
+          <i class="mdi mdi-table-edit" (click)="getSpeakersById(element.id)"></i>&nbsp; <mat-checkbox
+            [checked]='element.isActive' (change)="IfActive(element.id,$event)">isActive</mat-checkbox>
         </td>
       </ng-container>
 

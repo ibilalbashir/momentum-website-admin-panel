@@ -25,4 +25,10 @@ export class CompanyService {
 	getCompanyServices(): Observable<any> {
 		return this.http.get(`${environment.url}/CompanyServices`);
 	}
+	getCompanyServicesById(id): Observable<any> {
+		return this.http.get(`${environment.url}/CompanyServices/${id}`);
+	}
+	patchCompanyService(id, data): Observable<any> {
+		return this.http.patch(`${environment.url}/CompanyServices/${id}`, data);
+	}
 }

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SpeakerService } from 'src/app/shared/services/speaker.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -12,11 +12,14 @@ import { ImageUploadService } from 'src/app/shared/services/image-upload.service
 	styleUrls: [ './speaker-crud.component.css' ]
 })
 export class SpeakerCrudComponent implements OnInit {
+	shouldOpen = false;
+
 	id;
 	ifUpdate = false;
 	image;
 	selectedFile = '';
 	speakerForm: FormGroup;
+
 	ifFront = false;
 	displayedColumns: string[] = [ 'name', 'email', 'company', 'designation', 'socialLinks', 'edit' ];
 	dataSource;
@@ -45,22 +48,24 @@ export class SpeakerCrudComponent implements OnInit {
 		this.ifUpdate = false;
 		this.speakerForm.reset();
 		this.selectedFile = '';
+		this.shouldOpen = false;
 	}
 	ngOnInit() {
 		this.fetchSpeakers();
 	}
 	getSpeakersById(id) {
+		this.shouldOpen = true;
 		this.ifUpdate = true;
 		this.id = id;
 		this.speakerService.getSpeakerById(id).subscribe(
 			(val) => {
-				console.log(val);
 				this.speakerForm.patchValue({
 					name: val.name,
 					company: val.company,
 					designation: val.designation,
 					description: val.description,
 					email: val.email,
+					showFront: val.showOnFront,
 					linkFacebook: val.socialLinks[0].link,
 					linkTwitter: val.socialLinks[1].link,
 					linkLinkedin: val.socialLinks[2].link,
@@ -96,13 +101,14 @@ export class SpeakerCrudComponent implements OnInit {
 	}
 	onSubmit() {
 		const obj = {
+			isActive: true,
 			name: this.speakerForm.get('name').value,
 			company: this.speakerForm.get('company').value,
 			designation: this.speakerForm.get('designation').value,
 			description: this.speakerForm.get('description').value,
 			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
 			email: this.speakerForm.get('email').value,
-			showOnFront: this.ifFront,
+			showOnFront: this.speakerForm.get('showFront').value,
 			socialLinks: [
 				{
 					key: 'Facebook',
@@ -122,6 +128,7 @@ export class SpeakerCrudComponent implements OnInit {
 				}
 			]
 		};
+		// console.log(obj);
 		this.speakerService.postSpeaker(obj).subscribe(
 			(val) => {
 				this.speakerForm.reset();
@@ -140,7 +147,7 @@ export class SpeakerCrudComponent implements OnInit {
 			description: this.speakerForm.get('description').value,
 			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
 			email: this.speakerForm.get('email').value,
-			showOnFront: this.ifFront,
+			showOnFront: this.speakerForm.get('showFront').value,
 			socialLinks: [
 				{
 					key: 'Facebook',
@@ -160,13 +167,27 @@ export class SpeakerCrudComponent implements OnInit {
 				}
 			]
 		};
+		// 	console.log(obj);
 		this.speakerService.patchSpeaker(this.id, obj).subscribe(
 			(val) => {
-				console.log(val);
+				this.shouldOpen = false;
 				this.speakerForm.reset();
 				this.fetchSpeakers();
 				this.toastr.success('Speaker updated.');
 				this.selectedFile = '';
+				this.ifUpdate = false;
+			},
+			(err) => console.log(err)
+		);
+	}
+	IfActive(id, $event) {
+		const data = {
+			isActive: $event.checked
+		};
+		this.speakerService.patchSpeaker(id, data).subscribe(
+			(val) => {
+				console.log(val);
+				this.fetchSpeakers();
 			},
 			(err) => console.log(err)
 		);

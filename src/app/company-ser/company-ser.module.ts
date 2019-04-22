@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { CompanySerRoutingModule } from './company-ser-routing.module';
 import { CompanySerCrudComponent } from './company-ser-crud/company-ser-crud.component';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTableModule } from '@angular/material/table';
 import {
 	MatInputModule,
@@ -27,6 +28,7 @@ import { ToastrModule } from 'ngx-toastr';
 		MatFormFieldModule,
 		MatButtonModule,
 		MatTableModule,
+		MatCheckboxModule,
 		ToastrModule.forRoot()
 	]
 })
