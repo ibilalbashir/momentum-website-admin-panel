@@ -13,22 +13,23 @@ import { MatTableModule } from '@angular/material/table';
 import { ToastrModule } from 'ngx-toastr';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 // import { ToastrModule } from 'ngx-toastr';
-
+import { SortablejsModule } from 'angular-sortablejs';
 @NgModule({
-	declarations: [ SpeakerCrudComponent ],
-	imports: [
-		CommonModule,
-		SpeakerRoutingModule,
-		MatInputModule,
-		MatSelectModule,
-		MatButtonModule,
-		MatExpansionModule,
-		FormsModule,
-		ReactiveFormsModule,
-		MatFormFieldModule,
-		MatTableModule,
-		MatCheckboxModule,
-		ToastrModule.forRoot()
-	]
+  declarations: [SpeakerCrudComponent],
+  imports: [
+    CommonModule,
+    SpeakerRoutingModule,
+    MatInputModule,
+    MatSelectModule,
+    MatButtonModule,
+    MatExpansionModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatTableModule,
+    MatCheckboxModule,
+    ToastrModule.forRoot(),
+    SortablejsModule
+  ]
 })
 export class SpeakerModule {}
