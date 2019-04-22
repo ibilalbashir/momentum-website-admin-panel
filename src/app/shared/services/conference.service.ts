@@ -18,4 +18,7 @@ export class ConferenceService {
 	getConferenceById(id): Observable<any> {
 		return this.http.get(`${environment.url}/Conferences/${id}`);
 	}
+	patchConference(id, data): Observable<any> {
+		return this.http.patch(`${environment.url}/Conferences/${id}`, data);
+	}
 }

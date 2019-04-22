@@ -76,11 +76,7 @@ export class WorkshopCrudComponent implements OnInit {
 		this.finalString = '';
 		this.workshopService.getWorkshopById(id).subscribe(
 			(val) => {
-				val.courseOutline.forEach((element) => {
-					this.finalString += element;
-					this.finalString += '\n';
-				});
-
+				this.finalString = val.courseOutline.join('\n');
 				this.workshopForm.patchValue({
 					name: val.name,
 					description: val.description,
@@ -100,7 +96,9 @@ export class WorkshopCrudComponent implements OnInit {
 		this.finalString = '';
 		this.workshopForm.reset();
 	}
+
 	updateWorkshop() {
+		const courseOutlineArr = this.workshopForm.get('courseOutline').value.split('\n');
 		const data = {
 			name: this.workshopForm.get('name').value,
 			description: this.workshopForm.get('description').value,
@@ -109,12 +107,12 @@ export class WorkshopCrudComponent implements OnInit {
 			tickerUrl: this.workshopForm.get('ticketUrl').value,
 			trainer: this.workshopForm.get('trainer').value,
 			organizedBy: this.workshopForm.get('organization').value,
-
+			courseOutline: courseOutlineArr,
 			lastUpdated: new Date()
 		};
+
 		this.workshopService.patchWorkshopById(this.id, data).subscribe(
 			(val) => {
-				console.log(val);
 				this.workshopForm.reset();
 				this.ifUpdate = false;
 				this.toastr.success('Workshop Updated.');
@@ -146,5 +144,13 @@ export class WorkshopCrudComponent implements OnInit {
 			},
 			(err) => console.log(err)
 		);
+	}
+	ifActive(id, $event) {
+		const data = {
+			isActive: $event.checked
+		};
+		this.workshopService
+			.patchWorkshopById(id, data)
+			.subscribe((val) => console.log(val), (err) => console.log(err));
 	}
 }

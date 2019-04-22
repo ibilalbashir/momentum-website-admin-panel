@@ -119,7 +119,7 @@
       <!-- Name Column -->
       <ng-container matColumnDef="description">
         <th mat-header-cell *matHeaderCellDef> Description </th>
-        <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+        <td mat-cell *matCellDef="let element"><small>{{element.description}}</small> </td>
       </ng-container>
 
       <!-- Weight Column -->
@@ -141,7 +141,9 @@
 
       <ng-container matColumnDef="edit">
         <th mat-header-cell *matHeaderCellDef> </th>
-        <td mat-cell *matCellDef="let element"> <i class="mdi mdi-table-edit" (click)="getWorkshopById(element.id)"></i>
+        <td mat-cell *matCellDef="let element"> <i class="mdi mdi-table-edit"
+            (click)="getWorkshopById(element.id)"></i>&nbsp;<mat-checkbox (change)="ifActive(element.id,$event)"
+            [checked]="element.isActive">isActive</mat-checkbox>
         </td>
       </ng-container>
 

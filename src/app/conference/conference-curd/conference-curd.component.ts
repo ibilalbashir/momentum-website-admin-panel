@@ -13,8 +13,9 @@ import { MatTableDataSource } from '@angular/material/table';
 	styleUrls: [ './conference-curd.component.css' ]
 })
 export class ConferenceCurdComponent implements OnInit {
+	id;
 	ifUpdate = false;
-	displayedColumns: string[] = [ 'name', 'description', 'type', 'to', 'from', 'day', 'venue', 'edit' ];
+	displayedColumns: string[] = [ 'name', 'description', 'type', 'from', 'to', 'day', 'venue', 'edit' ];
 	dataSource;
 	type = [ 'Keynote Speaker', 'Fireside chat', 'Panel Discussion' ];
 	venue = [ 'Main hall 1', 'Main hall 2', 'Main hall 3' ];
@@ -52,6 +53,7 @@ export class ConferenceCurdComponent implements OnInit {
 	}
 
 	getConferenceById(id) {
+		this.id = id;
 		this.ifUpdate = true;
 		this.conService.getConferenceById(id).subscribe((val) => {
 			this.conferenceForm.patchValue({
@@ -65,7 +67,8 @@ export class ConferenceCurdComponent implements OnInit {
 			});
 			this.selectedType = val.type;
 			if (this.selectedType === 'Keynote Speaker') {
-				console.log('hello from speaker');
+				console.log('hello from speaker', val.participant[0]);
+
 				this.conferenceForm.patchValue({
 					speaker: val.participant[0]
 				});
@@ -76,6 +79,7 @@ export class ConferenceCurdComponent implements OnInit {
 					firesideChat: val.participant
 				});
 			} else if (this.selectedType === 'Panel Discussion') {
+				console.log('hello from panel');
 				const panelPeople = [];
 				let panelMod;
 				val.participant.forEach((element) => {
@@ -123,7 +127,13 @@ export class ConferenceCurdComponent implements OnInit {
 	}
 	selectModerator(item) {
 		this.selectedModerator = item.source.value;
-		this.selectedModerator.type = 'moderator';
+		this.speaker.forEach((element) => {
+			if (element.id === this.selectedModerator.id) {
+				element.type = 'moderator';
+			} else {
+				element.type = 'speaker';
+			}
+		});
 	}
 	selectVenue(item) {
 		this.selectedVenue = item.source.value;
@@ -194,7 +204,6 @@ export class ConferenceCurdComponent implements OnInit {
 
 		this.conService.postConference(data).subscribe(
 			(val) => {
-				console.log(val);
 				this.conferenceForm.reset();
 				this.toastr.success('Conference created');
 				this.selectedType = '';
@@ -250,13 +259,24 @@ export class ConferenceCurdComponent implements OnInit {
 				tags: 'not yet defined'
 			};
 		}
-		console.log(data);
-		this.conferenceForm.reset();
+		this.conService.patchConference(this.id, data).subscribe((val) => {
+			console.log(val);
+			this.conferenceForm.reset();
+			this.ifUpdate = false;
+			this.fetchConference();
+			this.toastr.success('Conference Updated.');
+		});
 	}
-	compareFn(o1, o2) {
+	compareFn(o1: any, o2: any) {
 		if (o1.id === o2.id) {
 			return true;
 		}
 		return false;
+	}
+	ifActive(id, $event) {
+		const data = {
+			isActive: $event.checked
+		};
+		this.conService.patchConference(id, data).subscribe((val) => console.log(val), (err) => console.log(err));
 	}
 }
