@@ -1,172 +1,163 @@
 <div class="card">
-  <div class="card-body">
-    <mat-accordion>
-      <mat-expansion-panel [expanded]='shouldOpen'>
+    <div class="card-body">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]='shouldOpen'>
 
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Create a Speaker
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Create a Speaker
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
 
-        <form [formGroup]="speakerForm">
-          <div class="row">
-            <div class="text-center w-100">
-              <h4>Add speaker details</h4>
-              <hr>
-            </div>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <input matInput formControlName="name" placeholder="Speaker's Name">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <input matInput type="email" formControlName="email" placeholder="Speaker's Email">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <input matInput formControlName="company" placeholder="Company Name">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <input matInput formControlName="designation" placeholder="Designation">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <input matInput formControlName="description" placeholder="Description">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <!-- <mat-form-field class="w-100"></mat-form-field> -->
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text">Upload</span>
-              </div>
-              <div class="custom-file">
-                <input type="file" accept="image/*" (change)="processFile($event)" class="custom-file-input">
-                <ng-container *ngIf="selectedFile.length > 0; else elseTemplate">
-                  <label class="custom-file-label" for="inputGroupFile01">{{selectedFile}}</label>
-                </ng-container>
-                <ng-template #elseTemplate>
-                  <label class="custom-file-label" for="inputGroupFile01">Choose a Logo</label>
-                </ng-template>
-
-
-              </div>
-            </div>
-
-          </div>
-          <div class="row">
-            <mat-checkbox formControlName="showFront" (change)="IfShow($event)">Show on front</mat-checkbox>
-          </div>
-          <div class="row">
-            <div class="text-center w-100">
-              <h4 style="display: inline-block">Integrate Social Links</h4>
-              <hr>
-            </div>
-          </div>
-          <!-- //test -->
-          <div class="row">
-            <mat-label>Facebook</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkFacebook" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-label>Twitter</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkTwitter" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-label>Linkesin</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkLinkedin" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-label>Website</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkWebsite" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <ng-container *ngIf="!ifUpdate; else warna">
-              <div class="w-100 text-center">
-                <button mat-raised-button (click)="onSubmit()" color="primary">Submit</button>
-              </div>
-            </ng-container>
-            <ng-template #warna>
-              <div class="w-100 text-center">
-                <button mat-raised-button (click)="updateSpeakers()" color="primary">Update</button>&nbsp;<a
-                  (click)="cancelUpdate()">cancel</a>
-              </div>
-            </ng-template>
+                <form [formGroup]="speakerForm">
+                    <div class="row">
+                        <div class="text-center w-100">
+                            <h4>Add speaker details</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="name" placeholder="Speaker's Name">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <input matInput type="email" formControlName="email" placeholder="Speaker's Email">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="company" placeholder="Company Name">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="designation" placeholder="Designation">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="description" placeholder="Description">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <!-- <mat-form-field class="w-100"></mat-form-field> -->
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" accept="image/*" (change)="processFile($event)" class="custom-file-input">
+                                <ng-container *ngIf="selectedFile.length > 0; else elseTemplate">
+                                    <label class="custom-file-label" for="inputGroupFile01">{{selectedFile}}</label>
+                                </ng-container>
+                                <ng-template #elseTemplate>
+                                    <label class="custom-file-label" for="inputGroupFile01">Choose a Logo</label>
+                                </ng-template>
 
 
+                            </div>
+                        </div>
 
-          </div>
-        </form>
+                    </div>
+                    <div class="row">
+                        <mat-checkbox formControlName="showFront" (change)="IfShow($event)">Show on front</mat-checkbox>
+                    </div>
+                    <div class="row">
+                        <div class="text-center w-100">
+                            <h4 style="display: inline-block">Integrate Social Links</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <!-- //test -->
+                    <div class="row">
+                        <mat-label>Facebook</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkFacebook" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-label>Twitter</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkTwitter" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-label>Linkesin</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkLinkedin" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-label>Website</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkWebsite" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <ng-container *ngIf="!ifUpdate; else warna">
+                            <div class="w-100 text-center">
+                                <button mat-raised-button (click)="onSubmit()" color="primary">Submit</button>
+                            </div>
+                        </ng-container>
+                        <ng-template #warna>
+                            <div class="w-100 text-center">
+                                <button mat-raised-button (click)="updateSpeakers()" color="primary">Update</button>&nbsp;<a (click)="cancelUpdate()">cancel</a>
+                            </div>
+                        </ng-template>
 
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+
+                    </div>
+                </form>
+
+
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
 </div>
 
 <div class="card">
-  <div class="card-body">
-    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <div class="card-body">
 
-      <!--- Note that these columns can be defined in any order.
-              The actual rendered columns are set as a property on the row definition" -->
-
-      <!-- Position Column -->
-      <ng-container matColumnDef="name">
-        <th mat-header-cell *matHeaderCellDef> Name </th>
-        <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="email">
-        <th mat-header-cell *matHeaderCellDef> Email </th>
-        <td mat-cell *matCellDef="let element"> {{element.email}} </td>
-      </ng-container>
-
-      <!-- Name Column -->
-      <ng-container matColumnDef="company">
-        <th mat-header-cell *matHeaderCellDef> Company </th>
-        <td mat-cell *matCellDef="let element"> {{element.company}} </td>
-      </ng-container>
-
-      <!-- Weight Column -->
-      <ng-container matColumnDef="designation">
-        <th mat-header-cell *matHeaderCellDef> Designation </th>
-        <td mat-cell *matCellDef="let element"> {{element.designation}} </td>
-      </ng-container>
-
-      <ng-container matColumnDef="socialLinks">
-        <th mat-header-cell *matHeaderCellDef> Social Links </th>
-        <td mat-cell *matCellDef="let element">
-          <div style="display: inline-block;" *ngFor="let item of element.socialLinks">
-            <a [href]=item.link target="_blank">{{item.key}}</a>&nbsp;
-          </div>
-        </td>
-      </ng-container>
-      <ng-container matColumnDef="edit">
-        <th mat-header-cell *matHeaderCellDef> </th>
-        <td mat-cell *matCellDef="let element">
-          <i class="mdi mdi-table-edit" (click)="getSpeakersById(element.id)"></i>&nbsp; <mat-checkbox
-            [checked]='element.isActive' (change)="IfActive(element.id,$event)">isActive</mat-checkbox>
-        </td>
-      </ng-container>
-
-      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-    </table>
-  </div>
+        <table class="table table-condensed mat-elevation-z8">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Email
+                    </th>
+                    <th>
+                        Company
+                    </th>
+                    <th>
+                        Designation
+                    </th>
+                    <th>
+                        Social Links
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody [sortablejs]="dataSource" [sortablejsOptions]="options">
+                <tr *ngFor="let element of dataSource">
+                    <td>{{element.name}}</td>
+                    <td>{{element.email}}</td>
+                    <td>{{element.company}}</td>
+                    <td>{{element.designation}}</td>
+                    <td>
+                        <div style="display: inline-block;" *ngFor="let item of element.socialLinks">
+                            <a [href]=item.link target="_blank">{{item.key}}</a>&nbsp;
+                        </div>
+                    </td>
+                    <td> <i class="mdi mdi-table-edit" (click)="getSpeakersById(element.id)"></i>&nbsp;
+                        <mat-checkbox [checked]='element.isActive' (change)="IfActive(element.id,$event)">isActive</mat-checkbox>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { environment } from 'src/environments/environment';
 import { ImageUploadService } from 'src/app/shared/services/image-upload.service';
 import { PartnerService } from 'src/app/shared/services/partner.service';
+import { SortablejsOptions } from 'angular-sortablejs';
 
 @Component({
   selector: 'app-partner-crud',
@@ -18,22 +19,30 @@ export class PartnerCrudComponent implements OnInit {
   showOnFront = false;
   selectedFile = '';
   partnerForm: FormGroup;
-  displayedColumns: string[] = ['name', 'description', 'category', 'socialLinks'];
-  category = ["Startup 100 Partner",
-    "Office Hours Partner",
-    "Design Partner",
-    "PR Partner",
-    "Application Partner",
-    "Execution Partner",
-    "Workshops Partner",
-    "Hackathon Partner",
-    "Ticketing Partner",
-    "Design Partner",
-    "Tech Fair Partner",
-    "Visuals Partner",
-    "Strategic Partner",
-    "Venue Partner",
-    "logistics partner"];
+  options: SortablejsOptions;
+  displayedColumns: string[] = [
+    'name',
+    'description',
+    'category',
+    'socialLinks'
+  ];
+  category = [
+    'Startup 100 Partner',
+    'Office Hours Partner',
+    'Design Partner',
+    'PR Partner',
+    'Application Partner',
+    'Execution Partner',
+    'Workshops Partner',
+    'Hackathon Partner',
+    'Ticketing Partner',
+    'Design Partner',
+    'Tech Fair Partner',
+    'Visuals Partner',
+    'Strategic Partner',
+    'Venue Partner',
+    'logistics partner'
+  ];
   dataSource;
 
   constructor(
@@ -54,14 +63,29 @@ export class PartnerCrudComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPartners();
+    this.options = {
+      onUpdate: e => {
+        // console.log()
+        console.log(this.dataSource);
+        this.dataSource = this.dataSource.map((x, index) => {
+          return { ...x, sortOrder: index };
+        });
+        this.update();
+      }
+    };
   }
-
+  update() {
+    this.dataSource.forEach(element => {
+      this.partnerService.update(element.id, element).subscribe();
+    });
+  }
   fetchPartners() {
     this.partnerService.getPartner().subscribe(
-      (val) => {
-        this.dataSource = new MatTableDataSource<any>(val);
+      val => {
+        // this.dataSource = new MatTableDataSource<any>(val);
+        this.dataSource = val;
       },
-      (err) => console.log(err)
+      err => console.log(err)
     );
   }
   processFile(e: any) {
@@ -69,10 +93,10 @@ export class PartnerCrudComponent implements OnInit {
       this.selectedFile = e.target.files[0].name;
 
       this.upload.uploadImage(e.target.files[0]).subscribe(
-        (val) => {
+        val => {
           this.image = val.result.files.image[0].name;
         },
-        (err) => console.log(err)
+        err => console.log(err)
       );
     } else {
       this.selectedFile = '';
@@ -90,7 +114,9 @@ export class PartnerCrudComponent implements OnInit {
       name: this.partnerForm.get('name').value,
       category: this.selectedCat,
       description: this.partnerForm.get('description').value,
-      image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
+      image: `${environment.url}/Attachments/momentum-attachments/download/${
+        this.image
+      }`,
       showOnFront: this.showOnFront,
       socialLinks: [
         {
@@ -113,14 +139,14 @@ export class PartnerCrudComponent implements OnInit {
     };
     // 	console.log(obj);
     this.partnerService.postPartner(obj).subscribe(
-      (val) => {
+      val => {
         this.partnerForm.reset();
         this.fetchPartners();
         this.toastr.success('Partner added.');
         this.selectedCat = '';
         this.selectedFile = '';
       },
-      (err) => this.toastr.error('Something went wrong, please try again.')
+      err => this.toastr.error('Something went wrong, please try again.')
     );
   }
 }
