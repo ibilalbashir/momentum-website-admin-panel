@@ -18,7 +18,7 @@ export class ConferenceCurdComponent implements OnInit {
 	displayedColumns: string[] = [ 'name', 'description', 'type', 'from', 'to', 'day', 'venue', 'edit' ];
 	dataSource;
 	type = [ 'Keynote Speaker', 'Fireside chat', 'Panel Discussion', 'Startup Pitches', 'Product Launch' ];
-	venue = [ 'Main hall 1', 'Main hall 2', 'Main hall 3' ];
+	venue = [ 'Conference hall' ];
 	day = [ '30/04/2019', '1/05/2019' ];
 	speaker = [];
 	selectedType;
