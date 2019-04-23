@@ -17,7 +17,7 @@ export class ConferenceCurdComponent implements OnInit {
 	ifUpdate = false;
 	displayedColumns: string[] = [ 'name', 'description', 'type', 'from', 'to', 'day', 'venue', 'edit' ];
 	dataSource;
-	type = [ 'Keynote Speaker', 'Fireside chat', 'Panel Discussion' ];
+	type = [ 'Keynote Speaker', 'Fireside chat', 'Panel Discussion', 'Startup Pitches', 'Product Launch' ];
 	venue = [ 'Main hall 1', 'Main hall 2', 'Main hall 3' ];
 	day = [ '30/04/2019', '1/05/2019' ];
 	speaker = [];
@@ -48,7 +48,9 @@ export class ConferenceCurdComponent implements OnInit {
 			type: [ '' ],
 			venue: [ '' ],
 			firesideChat: [ '' ],
-			panel: []
+			panel: [],
+			startupPitches: [],
+			productLaunch: []
 		});
 	}
 
@@ -92,6 +94,18 @@ export class ConferenceCurdComponent implements OnInit {
 				this.conferenceForm.patchValue({
 					panel: panelPeople,
 					moderator: panelMod
+				});
+			} else if (this.selectedType === 'Startup Pitches') {
+				console.log('hello from Startup Pitches');
+				console.log(val.participant);
+				this.conferenceForm.patchValue({
+					startupPitches: val.participant
+				});
+			} else if (this.selectedType === 'Product Launch') {
+				console.log('hello from Product Launch');
+				console.log(val.participant);
+				this.conferenceForm.patchValue({
+					productLaunch: val.participant
 				});
 			}
 		}, (err) => console.log);
@@ -200,6 +214,30 @@ export class ConferenceCurdComponent implements OnInit {
 				venue: this.selectedVenue,
 				tags: 'not yet defined'
 			};
+		} else if (this.selectedType === 'Startup Pitches') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.selectedType,
+				participant: this.conferenceForm.get('startupPitches').value,
+				venue: this.selectedVenue,
+				actualDate: this.selectedDay,
+				tags: 'not yet defined'
+			};
+		} else if (this.selectedType === 'Product Launch') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.selectedType,
+				participant: this.conferenceForm.get('productLaunch').value,
+				venue: this.selectedVenue,
+				actualDate: this.selectedDay,
+				tags: 'not yet defined'
+			};
 		}
 
 		this.conService.postConference(data).subscribe(
@@ -258,7 +296,32 @@ export class ConferenceCurdComponent implements OnInit {
 				actualDate: this.conferenceForm.get('day').value,
 				tags: 'not yet defined'
 			};
+		} else if (this.conferenceForm.get('type').value === 'Startup Pitches') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.conferenceForm.get('type').value,
+				participant: this.conferenceForm.get('startupPitches').value,
+				venue: this.conferenceForm.get('venue').value,
+				actualDate: this.conferenceForm.get('day').value,
+				tags: 'not yet defined'
+			};
+		} else if (this.conferenceForm.get('type').value === 'Product Launch') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.conferenceForm.get('type').value,
+				participant: this.conferenceForm.get('productLaunch').value,
+				venue: this.conferenceForm.get('venue').value,
+				actualDate: this.conferenceForm.get('day').value,
+				tags: 'not yet defined'
+			};
 		}
+
 		this.conService.patchConference(this.id, data).subscribe((val) => {
 			console.log(val);
 			this.conferenceForm.reset();
