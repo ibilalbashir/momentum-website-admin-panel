@@ -1,0 +1,57 @@
+<div class="card">
+  <div class="card-body">
+    <h4 class="card-title">Email Broadcaster</h4>
+    <div class="row">
+      <div class="col-6">
+        <mat-form-field class="w-100">
+          <span matPrefix><i class="mdi mdi-magnify"></i></span>
+          <input [formControl]="companySearchCtrl" matInput placeholder="Search for startups" [matAutocomplete]="auto">
+          <span matSuffix>
+            <mat-checkbox [formControl]="checkStartups">Check all startups</mat-checkbox>
+          </span>
+          <mat-autocomplete #auto="matAutocomplete" (optionSelected)="companySelected($event)">
+            <mat-option *ngFor="let option of (filteredStartups | async)" [value]="option">
+              {{option['name']}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+      <div class="col-6">
+        <mat-form-field class="w-100">
+          <span matPrefix><i class="mdi mdi-magnify"></i></span>
+          <input matInput [formControl]="userSearchCtrl" [matAutocomplete]="userAuto" placeholder="Search for users">
+          <span matSuffix>
+            <mat-checkbox [formControl]="checkUsers">Check all users</mat-checkbox>
+          </span>
+          <mat-autocomplete #userAuto="matAutocomplete" (optionSelected)="userSelected($event)">
+            <mat-option *ngFor="let option of (filteredUsers | async)" [value]="option">
+              {{option['firstName']}} {{option['lastName']}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row">
+      <mat-form-field class="w-100">
+        <mat-chip-list #chipList>
+          <mat-chip *ngFor="let item of email" [selectable]="selectable" [removable]="removable"
+            (removed)="remove(item)">
+            {{item.name}}
+            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+          </mat-chip>
+          <input placeholder="Enter Email" [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <quill-editor [(ngModel)]="htmlContent" [style]="{height: '200px'}"></quill-editor>
+      </div>
+    </div>
+    <div>
+      <button (click)="submitEmail()" class="w-100 btn btn-primary">Submit</button>
+    </div>
+  </div>
+</div>

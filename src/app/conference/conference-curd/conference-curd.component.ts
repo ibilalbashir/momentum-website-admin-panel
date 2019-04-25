@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { SpeakerService } from 'src/app/shared/services/speaker.service';
+import { SpeakerService } from '../../shared/services/speaker.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DialogBoxComponent } from '../dialog-box/dialog-box.component';
 import { ToastrService } from 'ngx-toastr';
 import { FormGroup, FormBuilder } from '@angular/forms';
-import { ConferenceService } from 'src/app/shared/services/conference.service';
+import { ConferenceService } from '../../shared/services/conference.service';
 import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
@@ -17,7 +17,16 @@ export class ConferenceCurdComponent implements OnInit {
 	ifUpdate = false;
 	displayedColumns: string[] = [ 'name', 'description', 'type', 'from', 'to', 'day', 'venue', 'edit' ];
 	dataSource;
-	type = [ 'Keynote Speaker', 'Fireside chat', 'Panel Discussion', 'Startup Pitches', 'Product Launch' ];
+	type = [
+		'Keynote Speaker',
+		'Fireside chat',
+		'Panel Discussion',
+		'Startup Pitches',
+		'Product Launch',
+		'Agenda item',
+		'Talk',
+		'Announcement'
+	];
 	venue = [ 'Conference hall' ];
 	day = [ '30/04/2019', '1/05/2019' ];
 	speaker = [];
@@ -50,7 +59,10 @@ export class ConferenceCurdComponent implements OnInit {
 			firesideChat: [ '' ],
 			panel: [],
 			startupPitches: [],
-			productLaunch: []
+			agendaItem: [],
+			productLaunch: [],
+			talk: [],
+			announcement: []
 		});
 	}
 
@@ -100,6 +112,18 @@ export class ConferenceCurdComponent implements OnInit {
 				console.log(val.participant);
 				this.conferenceForm.patchValue({
 					startupPitches: val.participant
+				});
+			} else if (this.selectedType === 'Agenda item') {
+				this.conferenceForm.patchValue({
+					agendaItem: val.participant
+				});
+			} else if (this.selectedType === 'Talk') {
+				this.conferenceForm.patchValue({
+					talk: val.participant
+				});
+			} else if (this.selectedType === 'Announcement') {
+				this.conferenceForm.patchValue({
+					announcement: val.participant
 				});
 			} else if (this.selectedType === 'Product Launch') {
 				console.log('hello from Product Launch');
@@ -198,6 +222,18 @@ export class ConferenceCurdComponent implements OnInit {
 				actualDate: this.selectedDay,
 				tags: 'not yet defined'
 			};
+		} else if (this.selectedType === 'Announcement') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.selectedType,
+				participant: this.conferenceForm.get('announcement').value,
+				venue: this.selectedVenue,
+				actualDate: this.selectedDay,
+				tags: 'not yet defined'
+			};
 		} else if (this.selectedType === 'Panel Discussion') {
 			this.conferenceForm.get('panel').value.forEach((element) => {
 				people.push(element);
@@ -222,6 +258,30 @@ export class ConferenceCurdComponent implements OnInit {
 				from: this.conferenceForm.get('from').value,
 				type: this.selectedType,
 				participant: this.conferenceForm.get('startupPitches').value,
+				venue: this.selectedVenue,
+				actualDate: this.selectedDay,
+				tags: 'not yet defined'
+			};
+		} else if (this.selectedType === 'Talk') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.selectedType,
+				participant: this.conferenceForm.get('talk').value,
+				venue: this.selectedVenue,
+				actualDate: this.selectedDay,
+				tags: 'not yet defined'
+			};
+		} else if (this.selectedType === 'Agenda item') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.selectedType,
+				participant: this.conferenceForm.get('agendaItem').value,
 				venue: this.selectedVenue,
 				actualDate: this.selectedDay,
 				tags: 'not yet defined'
@@ -279,6 +339,18 @@ export class ConferenceCurdComponent implements OnInit {
 				actualDate: this.conferenceForm.get('day').value,
 				tags: 'not yet defined'
 			};
+		} else if (this.conferenceForm.get('type').value === 'Announcement') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.conferenceForm.get('type').value,
+				participant: this.conferenceForm.get('announcement').value,
+				venue: this.conferenceForm.get('venue').value,
+				actualDate: this.conferenceForm.get('day').value,
+				tags: 'not yet defined'
+			};
 		} else if (this.conferenceForm.get('type').value === 'Panel Discussion') {
 			people = [];
 			this.conferenceForm.get('panel').value.forEach((element) => {
@@ -304,6 +376,30 @@ export class ConferenceCurdComponent implements OnInit {
 				from: this.conferenceForm.get('from').value,
 				type: this.conferenceForm.get('type').value,
 				participant: this.conferenceForm.get('startupPitches').value,
+				venue: this.conferenceForm.get('venue').value,
+				actualDate: this.conferenceForm.get('day').value,
+				tags: 'not yet defined'
+			};
+		} else if (this.conferenceForm.get('type').value === 'Talk') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.conferenceForm.get('type').value,
+				participant: this.conferenceForm.get('talk').value,
+				venue: this.conferenceForm.get('venue').value,
+				actualDate: this.conferenceForm.get('day').value,
+				tags: 'not yet defined'
+			};
+		} else if (this.conferenceForm.get('type').value === 'Agenda item') {
+			data = {
+				name: this.conferenceForm.get('name').value,
+				description: this.conferenceForm.get('description').value,
+				to: this.conferenceForm.get('to').value,
+				from: this.conferenceForm.get('from').value,
+				type: this.conferenceForm.get('type').value,
+				participant: this.conferenceForm.get('agendaItem').value,
 				venue: this.conferenceForm.get('venue').value,
 				actualDate: this.conferenceForm.get('day').value,
 				tags: 'not yet defined'

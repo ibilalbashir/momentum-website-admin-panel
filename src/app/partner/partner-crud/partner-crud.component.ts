@@ -23,23 +23,7 @@ export class PartnerCrudComponent implements OnInit {
 	partnerForm: FormGroup;
 	options: SortablejsOptions;
 	displayedColumns: string[] = [ 'name', 'description', 'category', 'socialLinks', 'edit' ];
-	category = [
-		'Startup 100 Partner',
-		'Office Hours Partner',
-		'Design Partner',
-		'PR Partner',
-		'Application Partner',
-		'Execution Partner',
-		'Workshops Partner',
-		'Hackathon Partner',
-		'Ticketing Partner',
-		'Design Partner',
-		'Tech Fair Partner',
-		'Visuals Partner',
-		'Strategic Partner',
-		'Venue Partner',
-		'logistics partner'
-	];
+	category = [];
 	dataSource;
 
 	constructor(
@@ -121,6 +105,13 @@ export class PartnerCrudComponent implements OnInit {
 		);
 	}
 	ngOnInit() {
+		this.partnerService.getTags().subscribe(
+			(val) => {
+				console.log(val, 'categories');
+				this.category = val;
+			},
+			(err) => console.log(err)
+		);
 		this.fetchPartners();
 		this.options = {
 			onUpdate: (e) => {

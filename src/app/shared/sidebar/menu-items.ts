@@ -57,6 +57,14 @@ export const ROUTES: RouteInfo[] = [
 		class: '',
 		extralink: false,
 		submenu: []
+	},
+	{
+		path: '/email-broadcaster',
+		title: 'Email Broadcaster',
+		icon: 'mdi mdi-email-open',
+		class: '',
+		extralink: false,
+		submenu: []
 	}
 ];
 // 		path: '',

@@ -77,6 +77,10 @@ export const Approutes: Routes = [
 			{
 				path: 'workshop',
 				loadChildren: './workshop/workshop.module#WorkshopModule'
+			},
+			{
+				path: 'email-broadcaster',
+				loadChildren: './email-broadcaster/email-broadcaster.module#EmailBroadcasterModule'
 			}
 		]
 	},

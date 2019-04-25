@@ -29,51 +29,52 @@ import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { AuthGuard } from './shared/guard/auth.guard';
 import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 import { SortablejsModule } from 'angular-sortablejs';
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
-  suppressScrollX: true,
-  wheelSpeed: 1,
-  wheelPropagation: true,
-  minScrollbarLength: 20
+	suppressScrollX: true,
+	wheelSpeed: 1,
+	wheelPropagation: true,
+	minScrollbarLength: 20
 };
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    SpinnerComponent,
-    FullComponent,
-    BlankComponent,
-    NavigationComponent,
-    BreadcrumbComponent,
-    SidebarComponent
-  ],
-  imports: [
-    CommonModule,
-    BrowserModule,
-    BrowserAnimationsModule,
-    FormsModule,
-    ReactiveFormsModule,
-    DataTablesModule,
-    HttpClientModule,
-    NgbModule,
-    RouterModule.forRoot(Approutes),
-    PerfectScrollbarModule,
-    NgMultiSelectDropDownModule.forRoot(),
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyDoliAneRffQDyA7Ul9cDk3tLe7vaU4yP8'
-    }),
-    SortablejsModule.forRoot({ animation: 150 })
-  ],
-  providers: [
-    {
-      provide: PERFECT_SCROLLBAR_CONFIG,
-      useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
-    },
-    {
-      provide: LocationStrategy,
-      useClass: HashLocationStrategy
-    },
-    AuthGuard
-  ],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		SpinnerComponent,
+		FullComponent,
+		BlankComponent,
+		NavigationComponent,
+		BreadcrumbComponent,
+		SidebarComponent
+	],
+	imports: [
+		CommonModule,
+		BrowserModule,
+		BrowserAnimationsModule,
+		FormsModule,
+		ReactiveFormsModule,
+		DataTablesModule,
+		HttpClientModule,
+		NgbModule,
+		RouterModule.forRoot(Approutes),
+		PerfectScrollbarModule,
+		NgMultiSelectDropDownModule.forRoot(),
+		AgmCoreModule.forRoot({
+			apiKey: 'AIzaSyDoliAneRffQDyA7Ul9cDk3tLe7vaU4yP8'
+		}),
+		SortablejsModule.forRoot({ animation: 150 })
+	],
+	providers: [
+		{
+			provide: PERFECT_SCROLLBAR_CONFIG,
+			useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+		},
+		{
+			provide: LocationStrategy,
+			useClass: HashLocationStrategy
+		},
+		AuthGuard
+	],
+	bootstrap: [ AppComponent ]
 })
 export class AppModule {}

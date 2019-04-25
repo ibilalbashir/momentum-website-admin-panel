@@ -162,10 +162,34 @@
                   </mat-select>
                 </mat-form-field>
               </div>
+              <div class="col-12 " *ngSwitchCase="'Agenda item'">
+                <mat-form-field class="w-100">
+                  <mat-label>Select Participants for Agenda item</mat-label>
+                  <mat-select [compareWith]="compareFn" formControlName="agendaItem" multiple>
+                    <mat-option *ngFor="let item of speaker" [value]="item">{{item.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
               <div class="col-12 " *ngSwitchCase="'Product Launch'">
                 <mat-form-field class="w-100">
                   <mat-label>Select Participants for Product Launch</mat-label>
                   <mat-select [compareWith]="compareFn" formControlName="productLaunch" multiple>
+                    <mat-option *ngFor="let item of speaker" [value]="item">{{item.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 " *ngSwitchCase="'Talk'">
+                <mat-form-field class="w-100">
+                  <mat-label>Select Participants for Talk</mat-label>
+                  <mat-select [compareWith]="compareFn" formControlName="talk" multiple>
+                    <mat-option *ngFor="let item of speaker" [value]="item">{{item.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="col-12 " *ngSwitchCase="'Announcement'">
+                <mat-form-field class="w-100">
+                  <mat-label>Select Participants for Talk</mat-label>
+                  <mat-select [compareWith]="compareFn" formControlName="announcement" multiple>
                     <mat-option *ngFor="let item of speaker" [value]="item">{{item.name}}</mat-option>
                   </mat-select>
                 </mat-form-field>

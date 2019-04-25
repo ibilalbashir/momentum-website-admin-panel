@@ -21,4 +21,7 @@ export class PartnerService {
 	update(id, data) {
 		return this.http.patch(`${environment.url}/Partners/${id}`, data);
 	}
+	getTags(): Observable<any> {
+		return this.http.get(`${environment.url}/Categories?`);
+	}
 }
