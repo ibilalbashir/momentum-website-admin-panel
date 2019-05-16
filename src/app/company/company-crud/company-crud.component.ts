@@ -54,7 +54,8 @@ export class CompanyCrudComponent implements OnInit {
 			twitter: [ '' ],
 			linkedin: [ '' ],
 			website: [ '' ],
-			startup: []
+			startup: [],
+			featured: []
 		});
 	}
 	ngOnInit() {
@@ -94,6 +95,7 @@ export class CompanyCrudComponent implements OnInit {
 			cityId: this.selectedCity,
 			momentumUserId: localStorage.getItem('userId'),
 			startup100: this.companyForm.get('startup').value,
+			isFeatured: this.companyForm.get('featured').value,
 			teamMembers: [],
 			socialLinks: [
 				{
@@ -139,6 +141,7 @@ export class CompanyCrudComponent implements OnInit {
 				category: val.category,
 				address: val.address,
 				startup: val.startup100,
+				featured: val.isFeatured,
 				facebook: val.socialLinks[0].link,
 				twitter: val.socialLinks[1].link,
 				linkedin: val.socialLinks[2].link,
@@ -212,6 +215,7 @@ export class CompanyCrudComponent implements OnInit {
 			momentumUserId: localStorage.getItem('userId'),
 			teamMembers: [],
 			startup100: this.companyForm.get('startup').value,
+			isFeatured: this.companyForm.get('featured').value,
 			socialLinks: [
 				{
 					key: 'Facebook',
