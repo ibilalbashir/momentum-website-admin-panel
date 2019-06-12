@@ -11,14 +11,16 @@ import { SortablejsOptions } from 'angular-sortablejs';
 @Component({
 	selector: 'app-partner-crud',
 	templateUrl: './partner-crud.component.html',
-	styleUrls: [ './partner-crud.component.css' ]
+	styleUrls: [ './partner-crud.component.scss' ]
 })
 export class PartnerCrudComponent implements OnInit {
+	updateImage=''
 	id;
 	selectedCat;
 	image;
 	ifUpdate = false;
 	showOnFront = false;
+	loadingImage=false;
 	selectedFile = '';
 	partnerForm: FormGroup;
 	options: SortablejsOptions;
@@ -48,7 +50,7 @@ export class PartnerCrudComponent implements OnInit {
 			name: this.partnerForm.get('name').value,
 			category: this.partnerForm.get('category').value,
 			description: this.partnerForm.get('description').value,
-			image: `${environment.url}/Attachments/momentum-attachments/download/${this.image}`,
+			image:this.updateImage,
 			showOnFront: this.partnerForm.get('showFront').value,
 			socialLinks: [
 				{
@@ -95,11 +97,14 @@ export class PartnerCrudComponent implements OnInit {
 					description: val.description,
 					showFront: val.showOnFront,
 					category: val.category,
+
 					linkFacebook: val.socialLinks[0].link,
 					linkTwitter: val.socialLinks[1].link,
 					linkLinkedin: val.socialLinks[2].link,
 					linkWebsite: val.socialLinks[3].link
 				});
+				this.updateImage=val.image;
+       
 			},
 			(err) => console.log(err)
 		);
@@ -140,10 +145,15 @@ export class PartnerCrudComponent implements OnInit {
 	processFile(e: any) {
 		if (e.target.files.length > 0) {
 			this.selectedFile = e.target.files[0].name;
-
+			this.loadingImage=true;
 			this.upload.uploadImage(e.target.files[0]).subscribe(
 				(val) => {
 					this.image = val.result.files.image[0].name;
+					if(this.ifUpdate){
+            
+						this.updateImage=`http://13.127.195.231:3000/api/Attachments/momentum-attachments/download/${val.result.files.image[0].name}`
+						this.loadingImage=false;
+					}
 				},
 				(err) => console.log(err)
 			);

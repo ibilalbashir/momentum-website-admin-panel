@@ -43,26 +43,51 @@
                     </div>
                     <div class="row">
                         <!-- <mat-form-field class="w-100"></mat-form-field> -->
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text">Upload</span>
-                            </div>
-                            <div class="custom-file">
-                                <input type="file" accept="image/*" (change)="processFile($event)" class="custom-file-input">
-                                <ng-container *ngIf="selectedFile.length > 0; else elseTemplate">
-                                    <label class="custom-file-label" for="inputGroupFile01">{{selectedFile}}</label>
-                                </ng-container>
-                                <ng-template #elseTemplate>
-                                    <label class="custom-file-label" for="inputGroupFile01">Choose a Logo</label>
-                                </ng-template>
+
+                        <div *ngIf="ifUpdate; else image" class="w-100">
+
+                            <div class="text-center ">
+                                <div class="uploadImage mat-elevation-z1" [ngStyle]="{background: 'url(' + updateImage + ')', width: '150px', height: '200px'}">
+                                    <div class="editImage">
+                                        <i class="mdi mdi-tooltip-edit " (click)="file.click()"></i>
+                                        <input type="file" class="d-none" accept="image/*" #file (change)="processFile($event)" class="custom-file-input">
+                                        <div class="spin" *ngIf="loadingImage">
+                                            <mat-spinner></mat-spinner>
+                                        </div>
+
+                                    </div>
+                                </div>
 
 
                             </div>
+
                         </div>
+                        <ng-template #image>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" accept="image/*" (change)="processFile($event)" class="custom-file-input">
+                                    <ng-container *ngIf="selectedFile.length > 0; else elseTemplate">
+                                        <label class="custom-file-label" for="inputGroupFile01">{{selectedFile}}</label>
+                                    </ng-container>
+                                    <ng-template #elseTemplate>
+                                        <label class="custom-file-label" for="inputGroupFile01">Choose a Logo</label>
+                                    </ng-template>
+
+
+                                </div>
+                            </div>
+                        </ng-template>
+
 
                     </div>
                     <div class="row">
                         <mat-checkbox formControlName="showFront" (change)="IfShow($event)">Show on front</mat-checkbox>
+                    </div>
+                    <div class="row">
+                        <mat-checkbox formControlName="influencer">Influencer</mat-checkbox>
                     </div>
                     <div class="row">
                         <div class="text-center w-100">

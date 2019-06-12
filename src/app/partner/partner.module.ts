@@ -12,6 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { ToastrModule } from 'ngx-toastr';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+
 import { SortablejsModule } from 'angular-sortablejs';
 @NgModule({
   declarations: [PartnerCrudComponent],
@@ -27,6 +29,7 @@ import { SortablejsModule } from 'angular-sortablejs';
     MatFormFieldModule,
     MatTableModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     ToastrModule.forRoot(),
     SortablejsModule
   ]

@@ -1,0 +1,25 @@
+table {
+    width: 100%;
+}
+
+.uploadImage {
+    margin: 0 auto;
+    background-position: center!important;
+    background-repeat: no-repeat!important;
+    background-size: cover!important;
+    position: relative;
+}
+
+.editImage {
+    i {
+        position: absolute;
+        font-size: 32px;
+        right: 0;
+        top: 6px;
+    }
+    .spin {
+        position: absolute;
+        top: 46px;
+        right: 24px;
+    }
+}

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SpeakerService } from 'src/app/shared/services/speaker.service';
 import { MatTableDataSource } from '@angular/material/table';
@@ -10,16 +10,21 @@ import { SortablejsOptions } from 'angular-sortablejs';
 @Component({
   selector: 'app-speaker-crud',
   templateUrl: './speaker-crud.component.html',
-  styleUrls: ['./speaker-crud.component.css']
+  styleUrls: ['./speaker-crud.component.scss']
 })
 export class SpeakerCrudComponent implements OnInit {
+ // @ViewChild('editFile')  public fileEl: ElementRef;
+ loadingImage=false;
   shouldOpen = false;
   options: SortablejsOptions;
   id;
+  updateImage=''
   ifUpdate = false;
   image;
   selectedFile = '';
   speakerForm: FormGroup;
+  uploadImage;
+  processingUpload=false;
 
   ifFront = false;
   displayedColumns: string[] = [
@@ -49,7 +54,8 @@ export class SpeakerCrudComponent implements OnInit {
       linkLinkedin: [''],
       linkWebsite: [''],
 
-      showFront: []
+      showFront: [],
+      influencer:[]
     });
   }
   cancelUpdate() {
@@ -57,6 +63,7 @@ export class SpeakerCrudComponent implements OnInit {
     this.speakerForm.reset();
     this.selectedFile = '';
     this.shouldOpen = false;
+    this.processingUpload=false;
   }
   ngOnInit() {
     this.fetchSpeakers();
@@ -70,18 +77,30 @@ export class SpeakerCrudComponent implements OnInit {
         this.update();
       }
     };
+    
   }
   update() {
     this.dataSource.forEach(element => {
       this.speakerService.patchSpeaker(element.id, element).subscribe();
     });
   }
+  // updateImage(){
+  //   this.processingUpload=true;
+  //   console.log('updateImage',this.id);
+  //   this.speakerService.getSpeakerById(this.id).subscribe(val=>{
+      
+  //     console.log(val);
+      
+  //   })
+  // }
   getSpeakersById(id) {
     this.shouldOpen = true;
     this.ifUpdate = true;
     this.id = id;
     this.speakerService.getSpeakerById(id).subscribe(
+
       val => {
+    
         this.speakerForm.patchValue({
           name: val.name,
           company: val.company,
@@ -89,11 +108,14 @@ export class SpeakerCrudComponent implements OnInit {
           description: val.description,
           email: val.email,
           showFront: val.showOnFront,
+          influencer:val.influencer,
           linkFacebook: val.socialLinks[0].link,
           linkTwitter: val.socialLinks[1].link,
           linkLinkedin: val.socialLinks[2].link,
           linkWebsite: val.socialLinks[3].link
         });
+        this.updateImage=val.image;
+        
       },
       err => console.log(err)
     );
@@ -110,12 +132,22 @@ export class SpeakerCrudComponent implements OnInit {
   processFile(e: any) {
     if (e.target.files.length > 0) {
       this.selectedFile = e.target.files[0].name;
+      this.loadingImage=true;
       this.upload.uploadImage(e.target.files[0]).subscribe(
         val => {
           this.image = val.result.files.image[0].name;
+
+          
+          if(this.ifUpdate){
+            
+            this.updateImage=`http://13.127.195.231:3000/api/Attachments/momentum-attachments/download/${val.result.files.image[0].name}`
+            this.loadingImage=false;
+          }
+
         },
         err => console.log(err)
       );
+
     } else {
       this.selectedFile = '';
     }
@@ -135,6 +167,7 @@ export class SpeakerCrudComponent implements OnInit {
       }`,
       email: this.speakerForm.get('email').value,
       showOnFront: this.speakerForm.get('showFront').value,
+      influencer:this.speakerForm.get('influencer').value,
       socialLinks: [
         {
           key: 'Facebook',
@@ -157,25 +190,27 @@ export class SpeakerCrudComponent implements OnInit {
     // console.log(obj);
     this.speakerService.postSpeaker(obj).subscribe(
       val => {
+        this.shouldOpen = false;
         this.speakerForm.reset();
         this.fetchSpeakers();
         this.toastr.success('Speaker added.');
         this.selectedFile = '';
+       
       },
       err => this.toastr.error('Something went wrong, please try again.')
     );
   }
   updateSpeakers() {
+    this.loadingImage=false;
     const obj = {
       name: this.speakerForm.get('name').value,
       company: this.speakerForm.get('company').value,
       designation: this.speakerForm.get('designation').value,
       description: this.speakerForm.get('description').value,
-      image: `${environment.url}/Attachments/momentum-attachments/download/${
-        this.image
-      }`,
+      image: this.updateImage,
       email: this.speakerForm.get('email').value,
       showOnFront: this.speakerForm.get('showFront').value,
+      influencer:this.speakerForm.get("influencer").value,
       socialLinks: [
         {
           key: 'Facebook',
@@ -214,7 +249,7 @@ export class SpeakerCrudComponent implements OnInit {
     };
     this.speakerService.patchSpeaker(id, data).subscribe(
       val => {
-        console.log(val);
+       
         this.fetchSpeakers();
       },
       err => console.log(err)

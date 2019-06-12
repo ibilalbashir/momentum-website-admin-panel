@@ -1,43 +1,41 @@
 <div class="card">
-  <div class="card-body">
-    <mat-accordion>
-      <mat-expansion-panel [expanded]="ifUpdate">
-        <mat-expansion-panel-header>
-          <mat-panel-title>
-            Create a Partner
-          </mat-panel-title>
-        </mat-expansion-panel-header>
+    <div class="card-body">
+        <mat-accordion>
+            <mat-expansion-panel [expanded]="ifUpdate">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        Create a Partner
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
 
-        <form [formGroup]="partnerForm">
-          <div class="row">
-            <div class="text-center w-100">
-              <h4>Add partner details</h4>
-              <hr>
-            </div>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <input matInput formControlName="name" placeholder="Partner's Name">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <mat-label>Select a category</mat-label>
-              <mat-select formControlName="category">
-                <mat-option *ngFor="let item of category" [value]="item.name"
-                  (onSelectionChange)='selectedCategory(item.name)'>
-                  {{item.name}}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-form-field class="w-100">
-              <input matInput formControlName="description" placeholder="Description">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <!-- <mat-form-field class="w-100"></mat-form-field> -->
+                <form [formGroup]="partnerForm">
+                    <div class="row">
+                        <div class="text-center w-100">
+                            <h4>Add partner details</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="name" placeholder="Partner's Name">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <mat-label>Select a category</mat-label>
+                            <mat-select formControlName="category">
+                                <mat-option *ngFor="let item of category" [value]="item.name" (onSelectionChange)='selectedCategory(item.name)'>
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="description" placeholder="Description">
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="row">
             <div class="input-group mb-3">
               <div class="input-group-prepend">
                 <span class="input-group-text">Upload</span>
@@ -55,100 +53,141 @@
               </div>
             </div>
 
-          </div>
-          <div class="row">
-            <mat-checkbox formControlName="showFront" (change)="ifTrue($event)">Show on front</mat-checkbox>
-          </div>
+          </div> -->
+                    <div class="row">
+                        <!-- <mat-form-field class="w-100"></mat-form-field> -->
+
+                        <div *ngIf="ifUpdate; else image" class="w-100">
+
+                            <div class="text-center ">
+                                <div class="uploadImage mat-elevation-z1" [ngStyle]="{background: 'url(' + updateImage + ')', width: '150px', height: '200px'}">
+                                    <div class="editImage">
+                                        <i class="mdi mdi-tooltip-edit " (click)="file.click()"></i>
+                                        <input type="file" class="d-none" accept="image/*" #file (change)="processFile($event)" class="custom-file-input">
+                                        <div class="spin" *ngIf="loadingImage">
+                                            <mat-spinner></mat-spinner>
+                                        </div>
+
+                                    </div>
+                                </div>
 
 
-          <div class="row">
-            <div class="text-center w-100">
-              <h4 style="display: inline-block">Integrate Social Links</h4>
-              <hr>
-            </div>
-          </div>
-          <div class="row">
-            <mat-label>Facebook</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkFacebook" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-label>Twitter</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkTwitter" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-label>Linkesin</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkLinkedin" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <mat-label>Website</mat-label>
-            <mat-form-field class="w-100">
-              <input matInput formControlName="linkWebsite" placeholder="Paste Your Link">
-            </mat-form-field>
-          </div>
-          <div class="row">
-            <ng-container *ngIf="!ifUpdate; else elsePartner">
-              <div class="w-100 text-center">
-                <button mat-raised-button (click)="onSubmit()" color="primary">Submit</button>
-              </div>
-            </ng-container>
-            <ng-template #elsePartner>
-              <div class="w-100 text-center">
-                <button mat-raised-button (click)="updatePartners()" color="primary">Update</button>&nbsp;<a
-                  (click)="cancelUpdate()">cancel</a>
-              </div>
-            </ng-template>
-          </div>
-        </form>
+                            </div>
+
+                        </div>
+                        <ng-template #image>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Upload</span>
+                                </div>
+                                <div class="custom-file">
+                                    <input type="file" accept="image/*" (change)="processFile($event)" class="custom-file-input">
+                                    <ng-container *ngIf="selectedFile.length > 0; else elseTemplate">
+                                        <label class="custom-file-label" for="inputGroupFile01">{{selectedFile}}</label>
+                                    </ng-container>
+                                    <ng-template #elseTemplate>
+                                        <label class="custom-file-label" for="inputGroupFile01">Choose a Logo</label>
+                                    </ng-template>
 
 
-      </mat-expansion-panel>
-    </mat-accordion>
-  </div>
+                                </div>
+                            </div>
+                        </ng-template>
+
+
+                    </div>
+                    <div class="row">
+                        <mat-checkbox formControlName="showFront" (change)="ifTrue($event)">Show on front</mat-checkbox>
+                    </div>
+
+
+                    <div class="row">
+                        <div class="text-center w-100">
+                            <h4 style="display: inline-block">Integrate Social Links</h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <mat-label>Facebook</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkFacebook" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-label>Twitter</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkTwitter" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-label>Linkesin</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkLinkedin" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <mat-label>Website</mat-label>
+                        <mat-form-field class="w-100">
+                            <input matInput formControlName="linkWebsite" placeholder="Paste Your Link">
+                        </mat-form-field>
+                    </div>
+                    <div class="row">
+                        <ng-container *ngIf="!ifUpdate; else elsePartner">
+                            <div class="w-100 text-center">
+                                <button mat-raised-button (click)="onSubmit()" color="primary">Submit</button>
+                            </div>
+                        </ng-container>
+                        <ng-template #elsePartner>
+                            <div class="w-100 text-center">
+                                <button mat-raised-button (click)="updatePartners()" color="primary">Update</button>&nbsp;<a (click)="cancelUpdate()">cancel</a>
+                            </div>
+                        </ng-template>
+                    </div>
+                </form>
+
+
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
 </div>
 
 <div class="card">
-  <div class="card-body">
+    <div class="card-body">
 
-    <table class="table table-condensed mat-elevation-z8">
-      <thead>
-        <tr>
-          <th>
-            Name
-          </th>
-          <th>
-            Description
-          </th>
-          <th>
-            Category
-          </th>
-          <th>
-            Social Links
-          </th>
-        </tr>
-      </thead>
-      <tbody [sortablejs]="dataSource" [sortablejsOptions]="options">
-        <tr *ngFor="let element of dataSource">
-          <td>{{element.name}}</td>
-          <td>{{element.description}}</td>
-          <td>{{element.category}}</td>
+        <table class="table table-condensed mat-elevation-z8">
+            <thead>
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        Description
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        Social Links
+                    </th>
+                </tr>
+            </thead>
+            <tbody [sortablejs]="dataSource" [sortablejsOptions]="options">
+                <tr *ngFor="let element of dataSource">
+                    <td>{{element.name}}</td>
+                    <td>{{element.description}}</td>
+                    <td>{{element.category}}</td>
 
-          <td>
-            <div style="display: inline-block;" *ngFor="let item of element.socialLinks">
-              <a [href]=item.link target="_blank">{{item.key}}</a>&nbsp;
-            </div>
-          </td>
-          <td><i class="mdi mdi-table-edit" (click)="getPartnersById(element.id)"></i>&nbsp;<mat-checkbox
-              (change)="ifActive(element.id,$event) " [checked]='element.isActive'>isActive</mat-checkbox>
-          </td>
+                    <td>
+                        <div style="display: inline-block;" *ngFor="let item of element.socialLinks">
+                            <a [href]=item.link target="_blank">{{item.key}}</a>&nbsp;
+                        </div>
+                    </td>
+                    <td><i class="mdi mdi-table-edit" (click)="getPartnersById(element.id)"></i>&nbsp;
+                        <mat-checkbox (change)="ifActive(element.id,$event) " [checked]='element.isActive'>isActive</mat-checkbox>
+                    </td>
 
-        </tr>
-      </tbody>
-    </table>
-  </div>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>

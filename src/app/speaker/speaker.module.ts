@@ -14,6 +14,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 // import { ToastrModule } from 'ngx-toastr';
 import { SortablejsModule } from 'angular-sortablejs';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+ 
 @NgModule({
   declarations: [SpeakerCrudComponent],
   imports: [
@@ -28,6 +30,7 @@ import { SortablejsModule } from 'angular-sortablejs';
     MatFormFieldModule,
     MatTableModule,
     MatCheckboxModule,
+    MatProgressSpinnerModule,
     ToastrModule.forRoot(),
     SortablejsModule
   ]
